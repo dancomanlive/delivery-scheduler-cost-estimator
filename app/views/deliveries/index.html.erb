@@ -59,33 +59,36 @@
 </div>
 
 <%= javascript_tag do %>
-  document.addEventListener('DOMContentLoaded', function() {
-    const totalCostElement = document.getElementById('total-cost');
-    
-    fetch('/deliveries/total_cost')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.total_cost === null || data.total_cost === undefined) {
-          throw new Error('Total cost data is missing');
-        }
-        totalCostElement.innerHTML = `Total Cost of All Deliveries: ${new Intl.NumberFormat('en-US', { 
-          style: 'currency', 
-          currency: 'USD' 
-        }).format(data.total_cost)}`;
-      })
-      .catch(error => {
-        console.error('Error fetching total cost:', error);
-        totalCostElement.innerHTML = 'Error loading total cost. Please refresh the page.';
-        totalCostElement.classList.add('text-red-600');
-      });
+  document.addEventListener('turbo:load', function() {
+    const updateTotalCost = function() {
+      const totalCostElement = document.getElementById('total-cost');
+      totalCostElement.innerHTML = 'Loading total cost...';
+      
+      fetch('/deliveries/total_cost')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.total_cost === null || data.total_cost === undefined) {
+            throw new Error('Total cost data is missing');
+          }
+          totalCostElement.innerHTML = `Total Cost of All Deliveries: ${new Intl.NumberFormat('en-US', { 
+            style: 'currency', 
+            currency: 'USD' 
+          }).format(data.total_cost)}`;
+        })
+        .catch(error => {
+          console.error('Error fetching total cost:', error);
+          totalCostElement.innerHTML = 'Error loading total cost. Please refresh the page.';
+          totalCostElement.classList.add('text-red-600');
+        });
+    };
+
+    // Update total cost on page load and after each turbo navigation
+    updateTotalCost();
+    document.addEventListener('turbo:render', updateTotalCost);
   });
 <% end %>
-
-<div class="my-6 flex justify-center">
-  <%= paginate @deliveries %>
-</div>
