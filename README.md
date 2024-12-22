@@ -4,12 +4,19 @@ A Ruby on Rails application for managing deliveries, scheduling, and cost estima
 
 ## Features
 
-- Create and schedule new deliveries
-- View all deliveries in a paginated table
-- Filter deliveries by pickup address and driver name
-- Automatic cost calculation based on weight and distance
-- Mobile-friendly design using Tailwind CSS
-- Basic route optimization for deliveries with the same pickup address
+As a user, I can schedule a delivery by providing the necessary details to create a new entry.
+
+As a user, I can view a list of all scheduled deliveries in a paginated format, making it easy to navigate through large datasets.
+
+As a user, I can filter deliveries by pickup address or driver name to quickly find specific records.
+
+As a user, I can see the total cost of all scheduled deliveries displayed below the delivery list for quick reference.
+
+As a user, I can view optimized delivery routes, where deliveries are grouped by pickup address and organized to minimize total distance.
+
+As a user, I can input natural language queries, such as asking for the total cost of deliveries to a specific location, and receive accurate results.
+
+As a developer, I can rely on a structured database and tested backend endpoints to ensure reliable and scalable functionality.
 
 ## Requirements
 
