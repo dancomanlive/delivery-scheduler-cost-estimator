@@ -16,7 +16,6 @@ A Ruby on Rails application for managing deliveries, scheduling, and cost estima
 - Ruby 3.3.6
 - Rails 8.0.0
 - PostgreSQL 17
-- Node.js and Yarn (for asset compilation)
 
 ## Setup
 
@@ -89,61 +88,6 @@ This will run:
 - Model tests for validation and cost calculation
 - Controller tests for all endpoints
 - Integration tests for main features
-
-## API Endpoints
-
-### List Deliveries
-```
-GET /deliveries
-```
-
-### Create Delivery
-```
-POST /deliveries
-```
-
-### Get Total Cost
-```
-GET /deliveries/total_cost
-```
-
-### Get Optimized Routes
-```
-GET /deliveries/optimized_routes
-```
-
-## Project Structure
-
-Key files and directories:
-
-```
-app/
-  ├── controllers/
-  │   └── deliveries_controller.rb
-  ├── models/
-  │   └── delivery.rb
-  └── views/
-      └── deliveries/
-          ├── index.html.erb
-          └── new.html.erb
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Future Improvements
-
-- [ ] Add user authentication
-- [ ] Implement real-time delivery tracking
-- [ ] Add email notifications for delivery updates
-- [ ] Integrate with mapping services for distance calculation
-- [ ] Add more sophisticated route optimization algorithms
-- [ ] Implement the LLM-based natural language query feature
 
 ## License
 

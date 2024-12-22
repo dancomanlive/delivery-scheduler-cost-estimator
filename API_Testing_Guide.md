@@ -43,7 +43,7 @@ Example Response:
 POST http://localhost:3000/deliveries
 ```
 - Method: POST
-- Headers: 
+- Headers:
   - Content-Type: application/json
   - X-CSRF-Token: [Get this from your browser or disable CSRF in development]
 - Body:
@@ -110,19 +110,103 @@ Example Response:
 }
 ```
 
+#### Semantic Search
+```
+GET http://localhost:3000/deliveries/semantic_search
+```
+- Method: GET
+- Authentication: None (development environment)
+- Query Parameters:
+  - `query` (required): The search query text to find similar deliveries
+
+Example Response:
+```json
+{
+  "query": "string",
+  "results": [
+    {
+      "id": "integer",
+      "pickup_address": "string",
+      "delivery_address": "string",
+      "weight": "decimal",
+      "distance": "decimal",
+      "cost": "decimal",
+      "scheduled_time": "datetime",
+      "similarity_score": "float"
+    }
+  ]
+}
+```
+
+Example Usage:
+```bash
+curl "http://localhost:3000/deliveries/semantic_search?query=deliveries in downtown area"
+```
+
+Response Details:
+- Results are limited to the top 10 most similar deliveries
+- Only deliveries with a similarity score < 0.22 are included (lower scores indicate higher similarity)
+- Results are sorted by similarity score in ascending order
+
+Error Responses:
+
+1. Missing Query Parameter
+```json
+{
+  "error": "Query parameter is required"
+}
+```
+Status Code: 422
+
+2. OpenAI API Error
+```json
+{
+  "error": "OpenAI API error: [error message]"
+}
+```
+Status Code: 422
+
+3. General Error
+```json
+{
+  "error": "[error message]"
+}
+```
+Status Code: 422
+
+Implementation Notes:
+- Uses OpenAI's text-embedding-ada-002 model to generate embeddings
+- Employs cosine distance for similarity measurement
+- Requires the OPENAI_API_KEY environment variable to be set
+
+Testing Tips:
+1. Test with various query types:
+   - Location-based queries (e.g., "deliveries in downtown area")
+   - Time-based queries (e.g., "urgent deliveries")
+   - Weight-based queries (e.g., "heavy packages")
+
+2. Verify error handling:
+   - Try empty query parameter
+   - Test with invalid API key
+   - Check response with no matching results
+
+3. Performance considerations:
+   - Response time may vary based on OpenAI API latency
+   - Large result sets are automatically limited to 10 items
+
 ### Handling CSRF Protection
 
 For POST requests in development, you have two options:
 
 1. **Disable CSRF for API requests** (Development only!)
-   
+
    In `app/controllers/deliveries_controller.rb`, add:
    ```ruby
    skip_before_action :verify_authenticity_token, if: -> { Rails.env.development? }
    ```
 
 2. **Include CSRF Token** (Recommended for production)
-   
+
    Get the token from your browser:
    1. Open your browser's developer tools
    2. Visit any page in your Rails app

@@ -17,6 +17,10 @@ Rails.application.routes.draw do
     collection do
       get 'total_cost'
       get 'optimized_routes'
+      get 'semantic_search'
     end
   end
+
+  # Routes for chats
+  resources :chats, only: [:create]
 end
